@@ -60,7 +60,10 @@ final class UserModelTest extends TestCase
         $user->addOperation($operation1);
         $user->addOperation($operation2);
 
-        $this->assertEquals([$operation1, $operation2], $user->getOperations());
+        $this->assertEquals(
+            [$operation1, $operation2],
+            $user->getOperations()
+        );
     }
 
     public function testCanGetUserOperations()

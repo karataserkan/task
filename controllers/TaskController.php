@@ -23,7 +23,10 @@ class TaskController extends BaseController
 
         foreach ($this->getLines($file) as $n => $line) {
             if (count($line) < 6) {
-                throw new \LengthException('Please provide correct data on line '.($n + 1), 1);
+                throw new \LengthException(
+                    'Please provide correct data on line '.($n + 1),
+                    1
+                );
             }
 
             $userId = (int) $line[1];

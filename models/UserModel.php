@@ -75,7 +75,11 @@ class UserModel extends BaseModel
      */
     public function calculateCommission($operation)
     {
-        return CommissionHelper::calculate($operation, $this->getOperations(), $this->getType());
+        return CommissionHelper::calculate(
+        	$operation, 
+        	$this->getOperations(), 
+        	$this->getType()
+    	);
     }
 
     /**

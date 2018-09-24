@@ -19,16 +19,26 @@ class CommissionHelper
      *
      * @return string
      */
-    public static function calculate($operation, $previousOperations = [], $userType)
-    {
+    public static function calculate(
+        $operation,
+        $previousOperations = [],
+        $userType
+    ) {
         //for cash in operations call calculateCashInCommission()
         //for cash out operations call calculateCashOutCommission()
         if ($operation->getType() == OperationModel::TYPE_CASH_IN) {
             return self::calculateCashInCommission($operation);
         } elseif ($operation->getType() == OperationModel::TYPE_CASH_OUT) {
-            return self::calculateCashOutCommission($operation, $previousOperations, $userType);
+            return self::calculateCashOutCommission(
+                $operation,
+                $previousOperations,
+                $userType
+            );
         } else {
-            throw new \InvalidArgumentException('Invalid operation type: '.$operation->getType(), 1);
+            throw new \InvalidArgumentException(
+                'Invalid operation type: '.$operation->getType(),
+                1
+            );
         }
     }
 
@@ -44,7 +54,10 @@ class CommissionHelper
         //get cash in commission fee
         $config = $GLOBALS['config'];
         if (!isset($config['cashInCommissionFee'])) {
-            throw new \OutOfRangeException('Please specify cash in commission fee rate', 1);
+            throw new \OutOfRangeException(
+                'Please specify cash in commission fee rate',
+                1
+            );
         }
 
         //calculate fee, operation amount / 100 * provided commission rate 
@@ -65,8 +78,11 @@ class CommissionHelper
      *
      * @return string
      */
-    public static function calculateCashOutCommission($operation, $previousOperations = [], $userType)
-    {
+    public static function calculateCashOutCommission(
+        $operation,
+        $previousOperations = [],
+        $userType
+    ) {
         //get cash out commission fee
         $config = $GLOBALS['config'];
         if (!isset($config['cashOutCommissionFee'])) {
@@ -85,16 +101,27 @@ class CommissionHelper
             $fee = $operation->getAmount() / 100 * $config['cashOutCommissionFee'];
 
             //if min cash out commission fee specified, apply rule
-            if (isset($config['minCashOutCommissionFeeCurrency']) || isset($config['minCashOutCommissionFeeAmount'])) {
+            if (
+                isset($config['minCashOutCommissionFeeCurrency']) ||
+                isset($config['minCashOutCommissionFeeAmount'])
+            ) {
                 $baseCurrency = $config['minCashOutCommissionFeeCurrency'];
 
                 //convert calculated fee from operation curreny to specified curreny to compare amounts
-                $feeInBaseCurrency = CurrencyHelper::convert($operation->getCurrency(), $baseCurrency, $fee);
+                $feeInBaseCurrency = CurrencyHelper::convert(
+                    $operation->getCurrency(),
+                    $baseCurrency,
+                    $fee
+                );
 
                 //if fee is under min fee amount, apply rule
                 if ($feeInBaseCurrency < $config['minCashOutCommissionFeeAmount']) {
                     //fee must be in operation currency
-                    $fee = CurrencyHelper::convert($baseCurrency, $operation->getCurrency(), $config['minCashOutCommissionFeeAmount']);
+                    $fee = CurrencyHelper::convert(
+                        $baseCurrency,
+                        $operation->getCurrency(),
+                        $config['minCashOutCommissionFeeAmount']
+                    );
                 }
             }
         } else {
@@ -117,7 +144,10 @@ class CommissionHelper
         $config = $GLOBALS['config'];
 
         //if week cash out operations amount and/or it's currency is not provided, skip discount
-        if (!isset($config['weeklyFreeCashOutAmount']) || !isset($config['weeklyFreeCashOutCurrency'])) {
+        if (
+            !isset($config['weeklyFreeCashOutAmount']) ||
+            !isset($config['weeklyFreeCashOutCurrency'])
+        ) {
             return $currentOperation->getAmount();
         }
 
@@ -142,10 +172,18 @@ class CommissionHelper
             $date = new \DateTime($operation->getDate());
 
             //calculate if operation is cash out and operation date is between current operation week
-            if ($operation->getType() == OperationModel::TYPE_CASH_OUT && $date <=  $sunday && $date >= $monday) {
+            if (
+                $operation->getType() == OperationModel::TYPE_CASH_OUT &&
+                $date <=  $sunday &&
+                $date >= $monday
+            ) {
                 ++$appliedOperationCount;
                 //week amount currency must be specified currency
-                $weekAmount += CurrencyHelper::convert($operation->getCurrency(), $specifiedCurrency, $operation->getAmount());
+                $weekAmount += CurrencyHelper::convert(
+                    $operation->getCurrency(),
+                    $specifiedCurrency,
+                    $operation->getAmount()
+                );
             }
         }
 
@@ -160,7 +198,11 @@ class CommissionHelper
         }
 
         //convert amount to specified currency to compare
-        $amountWithSpecifiedCurrency = CurrencyHelper::convert($currentOperation->getCurrency(), $specifiedCurrency, $currentOperation->getAmount());
+        $amountWithSpecifiedCurrency = CurrencyHelper::convert(
+            $currentOperation->getCurrency(),
+            $specifiedCurrency,
+            $currentOperation->getAmount()
+        );
 
         //gets remained discount amount
         $amountRemained = $specifiedDiscountAmount - $weekAmount;
@@ -171,7 +213,11 @@ class CommissionHelper
             return 0;
         } else {
             //fee must be in operation currency
-            return CurrencyHelper::convert($specifiedCurrency, $currentOperation->getCurrency(), ($amountWithSpecifiedCurrency - $amountRemained));
+            return CurrencyHelper::convert(
+                $specifiedCurrency,
+                $currentOperation->getCurrency(),
+                ($amountWithSpecifiedCurrency - $amountRemained)
+            );
         }
     }
 
@@ -187,16 +233,27 @@ class CommissionHelper
     {
         //if max cash in fee amount and/or it's currency is not provided, skip rule
         $config = $GLOBALS['config'];
-        if (!isset($config['maxCashInCommissionFeeCurrency']) || !isset($config['maxCashInCommissionFeeAmount'])) {
+        if (
+            !isset($config['maxCashInCommissionFeeCurrency']) ||
+            !isset($config['maxCashInCommissionFeeAmount'])
+        ) {
             return $amount;
         }
 
         //convert amount to specified currency
-        $converted = CurrencyHelper::convert($currency, $config['maxCashInCommissionFeeCurrency'], $amount);
+        $converted = CurrencyHelper::convert(
+            $currency,
+            $config['maxCashInCommissionFeeCurrency'],
+            $amount
+        );
 
         //check for max cash in fee
         if ($converted > $config['maxCashInCommissionFeeAmount']) {
-            return CurrencyHelper::convert($config['maxCashInCommissionFeeCurrency'], $currency, $config['maxCashInCommissionFeeAmount']);
+            return CurrencyHelper::convert(
+                $config['maxCashInCommissionFeeCurrency'],
+                $currency,
+                $config['maxCashInCommissionFeeAmount']
+            );
         }
 
         return $amount;

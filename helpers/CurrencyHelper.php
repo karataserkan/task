@@ -24,7 +24,12 @@ class CurrencyHelper
                 break;
 
             default:
-                $result = number_format(round(ceil($value * 100) / 100, 2), 2, '.', '');
+                $result = number_format(
+                    round(ceil($value * 100) / 100, 2),
+                    2,
+                    '.',
+                    ''
+                );
                 break;
         }
 
@@ -51,7 +56,11 @@ class CurrencyHelper
             return $amount / $rates[$to.$from];
         } else {
             //if conversation rates not specified, convert using EUR
-            return self::convert('EUR', $to, self::convert($from, 'EUR', $amount));
+            return self::convert(
+                'EUR',
+                $to,
+                self::convert($from, 'EUR', $amount)
+            );
         }
     }
 
@@ -64,7 +73,10 @@ class CurrencyHelper
     {
         $config = $GLOBALS['config'];
         if (!isset($config['rates'])) {
-            throw new \OutOfRangeException('Please specify currency conversation rates!', 1);
+            throw new \OutOfRangeException(
+                'Please specify currency conversation rates!',
+                1
+            );
         }
 
         return $config['rates'];
