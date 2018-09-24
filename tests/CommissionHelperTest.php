@@ -18,7 +18,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('1000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("0.30", CommissionHelper::calculate($operation, [], 'legal'));
+        $this->assertEquals('0.30', CommissionHelper::calculate($operation, [], 'legal'));
     }
 
     public function testCanCalculateMaxCashIn()
@@ -29,7 +29,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('10000000000000.00');
         $operation->setCurrency('JPY');
 
-        $this->assertEquals("648", CommissionHelper::calculate($operation, [], 'legal'));
+        $this->assertEquals('648', CommissionHelper::calculate($operation, [], 'legal'));
     }
 
     public function testCanCalculateCashInCommission()
@@ -40,7 +40,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('1000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("0.30", CommissionHelper::calculateCashInCommission($operation));
+        $this->assertEquals('0.30', CommissionHelper::calculateCashInCommission($operation));
     }
 
     public function testCanCalculateCashOutLegalCommission()
@@ -51,7 +51,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('1000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("3.00", CommissionHelper::calculateCashOutCommission($operation, [], 'legal'));
+        $this->assertEquals('3.00', CommissionHelper::calculateCashOutCommission($operation, [], 'legal'));
     }
 
     public function testCanCalculateCashOutLegalMinCommission()
@@ -62,7 +62,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('100.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("0.50", CommissionHelper::calculateCashOutCommission($operation, [], 'legal'));
+        $this->assertEquals('0.50', CommissionHelper::calculateCashOutCommission($operation, [], 'legal'));
     }
 
     public function testCanCalculateCashOutNaturalCommissionForFree()
@@ -73,7 +73,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('1000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("0.00", CommissionHelper::calculateCashOutCommission($operation, [], 'natural'));
+        $this->assertEquals('0.00', CommissionHelper::calculateCashOutCommission($operation, [], 'natural'));
     }
 
     public function testCanCalculateCashOutNaturalCommissionWithDiscount()
@@ -84,7 +84,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('2000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("3.00", CommissionHelper::calculateCashOutCommission($operation, [], 'natural'));
+        $this->assertEquals('3.00', CommissionHelper::calculateCashOutCommission($operation, [], 'natural'));
     }
 
     public function testCanCalculateCashOutNaturalCommissionWithDiscountPreviousOperations()
@@ -101,7 +101,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('2000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("6.00", CommissionHelper::calculateCashOutCommission($operation, [$previosOperation], 'natural'));
+        $this->assertEquals('6.00', CommissionHelper::calculateCashOutCommission($operation, [$previosOperation], 'natural'));
     }
 
     public function testCanApplyDiscount()
@@ -112,7 +112,7 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('2000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("1000.00", CommissionHelper::applyDiscount($operation, []));
+        $this->assertEquals('1000.00', CommissionHelper::applyDiscount($operation, []));
     }
 
     public function testCanApplyDiscountWithPrevious()
@@ -129,16 +129,16 @@ final class CommissionHelperTest extends TestCase
         $operation->setAmount('2000.00');
         $operation->setCurrency('EUR');
 
-        $this->assertEquals("2000.00", CommissionHelper::applyDiscount($operation, [$previosOperation]));
+        $this->assertEquals('2000.00', CommissionHelper::applyDiscount($operation, [$previosOperation]));
     }
 
     public function testCanApplyMaxCashInFeeTrue()
     {
-        $this->assertEquals("5.00", CommissionHelper::applyMaxCashInFee("100.00", "EUR"));
+        $this->assertEquals('5.00', CommissionHelper::applyMaxCashInFee('100.00', 'EUR'));
     }
 
     public function testCanApplyMaxCashInFeeFalse()
     {
-        $this->assertEquals("1.00", CommissionHelper::applyMaxCashInFee("1.00", "EUR"));
+        $this->assertEquals('1.00', CommissionHelper::applyMaxCashInFee('1.00', 'EUR'));
     }
 }

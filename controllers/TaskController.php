@@ -26,7 +26,7 @@ class TaskController extends BaseController
                 throw new \LengthException('Please provide correct data on line '.($n + 1), 1);
             }
 
-            $userId = (int)$line[1];
+            $userId = (int) $line[1];
             $userType = $line[2];
 
             //if user not created, create a user
@@ -50,13 +50,13 @@ class TaskController extends BaseController
             //calculate commission for each line of provided csv file
             $commission = $user->calculateCommission($operation);
             //echo $commission.PHP_EOL;
-            fputs ($out, $commission.PHP_EOL);
+            fputs($out, $commission.PHP_EOL);
 
             //add operation to user to calculate commissions and discounts correctly 
             $user->addOperation($operation);
             $users[$userId] = $user;
         }
-        fclose($out);    
+        fclose($out);
     }
 
     /**
@@ -73,7 +73,7 @@ class TaskController extends BaseController
         }
 
         if (!file_exists($params[2])) {
-            throw new \InvalidArgumentException("File not exists", 1);
+            throw new \InvalidArgumentException('File not exists', 1);
         }
 
         return $params[2];
@@ -89,7 +89,7 @@ class TaskController extends BaseController
     public function getLines($file)
     {
         if (!file_exists($file)) {
-            throw new \InvalidArgumentException("File not exists", 1);
+            throw new \InvalidArgumentException('File not exists', 1);
         }
 
         $f = fopen($file, 'r');

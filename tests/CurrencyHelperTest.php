@@ -12,19 +12,19 @@ final class CurrencyHelperTest extends TestCase
     public function testCanFormatJPY()
     {
         $value = 152.3;
-        $this->assertEquals("153", CurrencyHelper::format($value, 'JPY'));
+        $this->assertEquals('153', CurrencyHelper::format($value, 'JPY'));
     }
 
     public function testCanFormatEUR()
     {
         $value = 152.312;
-        $this->assertEquals("152.32", CurrencyHelper::format($value, 'EUR'));
+        $this->assertEquals('152.32', CurrencyHelper::format($value, 'EUR'));
     }
 
     public function testCanFormatUSD()
     {
         $value = 152.312;
-        $this->assertEquals("152.32", CurrencyHelper::format($value, 'USD'));
+        $this->assertEquals('152.32', CurrencyHelper::format($value, 'USD'));
     }
 
     public function testCanConvertEURJPY()

@@ -196,7 +196,7 @@ class CommissionHelper
 
         //check for max cash in fee
         if ($converted > $config['maxCashInCommissionFeeAmount']) {
-            return CurrencyHelper::convert($config['maxCashInCommissionFeeCurrency'], $currency ,$config['maxCashInCommissionFeeAmount']);
+            return CurrencyHelper::convert($config['maxCashInCommissionFeeCurrency'], $currency, $config['maxCashInCommissionFeeAmount']);
         }
 
         return $amount;
